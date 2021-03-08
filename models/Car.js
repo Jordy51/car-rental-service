@@ -1,20 +1,5 @@
 const mongoose = require("mongoose");
 
-const TripSchema = mongoose.Schema({
-	fromDateTime: {
-		type: Date,
-		required: true,
-	},
-	toDateTime: {
-		type: Date,
-		required: true,
-	},
-	user: {
-		type: mongoose.Types.ObjectId,
-		ref: "User",
-	},
-});
-
 const CarSchema = mongoose.Schema({
 	carLicenseNumber: {
 		type: String,
@@ -46,13 +31,9 @@ const CarSchema = mongoose.Schema({
 		required: true,
 		mix: 0,
 	},
-	trips: [TripSchema],
 });
 
-const Car = mongoose.model("Car", CarSchema);
-const Trip = mongoose.model("Trip", TripSchema);
-
-module.exports = { Car, Trip };
+module.exports = mongoose.model("Car", CarSchema);
 // carLicenseNumber(Unique true) = KA01EM7070,
 // Manufacturer - honda,
 // Model - city,

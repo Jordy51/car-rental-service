@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { Car } = require("../models/Car");
+const Car = require("../models/Car");
+const Booking = require("../models/Booking");
 
 // /car/book
 
@@ -11,7 +12,16 @@ sanitizeCarLicenseNumber = (carLicenseNumber) => {
 
 // /cars Read All
 router.get("/", async (req, res) => {
-	res.json(await Car.find({}));
+	var cars = await Car.find({}).populate("bookings");
+	res.json(cars);
+	// Car.find({})
+	// 	.populate("bookings")
+	// 	.exec((err, booking) => {
+
+	// 	});
+	// res.send("Hello")
+
+	// res.render("carsView", { cars });
 });
 
 // /cars Read
@@ -55,9 +65,29 @@ router.delete("/:id", async (req, res) => {
 	res.json(deleteCar);
 });
 
+// /car/:id/bookings
+router.get("/:id/bookings", async (req, res) => {
+	const bookings = await Booking.find({ car: req.params.id });
+	res.json(bookings);
+});
+
 // /cars/search-cars
 router.get("/search-cars/:fromDateTime/:toDateTime", async (req, res) => {
-	const searchedCars = await Car.find({});
+	const cars = await Car.find();
+	let availableCars = Array();
+	for (let i = 0; i < cars.length; i++) {
+		let flag = 1;
+		let bookings = cars[i].bookings;
+		for (let j = bookings.length; j != 0; j--) {
+			if (bookings[j].toDateTime < req.params.fromDateTime || bookings[j].fromDateTime > req.params.toDateTime) {
+			} else {
+				flag = 0;
+			}
+		}
+		if (!flag) {
+			availableCars.push(cars[i]);
+		}
+	}
 });
 
 // /cars/calculate-price

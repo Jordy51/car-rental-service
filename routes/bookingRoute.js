@@ -1,35 +1,45 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const { Car, Trip } = require("../models/Car");
 
-// /car/:id/book
+const Booking = require("../models/Booking");
+
+// /:id/book/:user
 router.post("/:id/book/:user", async (req, res) => {
 	const { fromDateTime, toDateTime } = req.body;
-	Car.findOne({ _id: req.params.id }).then((carToBeBooked) => {
-		if (carToBeBooked.trips.length == 0 || carToBeBooked.trips[carToBeBooked.trips.length - 1].toDateTime < fromDateTime) {
-			const newTrip = new Trip({
-				fromDateTime,
-				toDateTime,
-				user: mongoose.Types.ObjectId(req.params.user),
-			});
-			console.log(newTrip);
-			carToBeBooked.update({
-				$push: {
-					trips: newTrip,
-				},
-			})
-			console.log(carToBeBooked);
-			res.json(carToBeBooked);
-		} else {
-			res.send("Not Booked!");
-		}
+	const newTrip = new Booking({
+		fromDateTime,
+		toDateTime,
+		user: mongoose.Types.ObjectId(req.params.user),
+		car: mongoose.Types.ObjectId(req.params.id),
 	});
+	newTrip.save();
+	res.json(newTrip);
 });
 
-// /:id/bookings
-router.get("/:id/bookings", async (req, res) => {
-	const bookings = await Car.findOne({ _id: req.params.id });
-	res.json(bookings.trips);
+// All Bookings
+router.get("/bookings", async (req, res) => {
+	let trips = await Booking.find({}).populate(["user", "car"]);
+	res.json(trips);
 });
 
 module.exports = router;
+
+// router.post("/:id/book/:user", async (req, res) => {
+// 	const { fromDateTime, toDateTime } = req.body;
+// 	Car.findByIdAndUpdate({ _id: req.params.id }).then((carToBeBooked) => {
+// 		// if (carToBeBooked.trips.length >= 0 || carToBeBooked.trips[carToBeBooked.trips.length - 1].toDateTime < fromDateTime) {
+// 		if (carToBeBooked.trips.length >= 0) {
+// 			const newTrip = new Trip({
+// 				fromDateTime,
+// 				toDateTime,
+// 				user: mongoose.Types.ObjectId(req.params.user),
+// 				car: mongoose.Types.ObjectId(req.params.id),
+// 			});
+// 			carToBeBooked.trips.push(newTrip);
+// 			carToBeBooked.save();
+// 			res.json(carToBeBooked);
+// 		} else {
+// 			res.send("Not Booked!");
+// 		}
+// 	});
+// });

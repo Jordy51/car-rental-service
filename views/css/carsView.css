@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap");
+
+* {
+	box-sizing: border-box;
+}
+body,
+html {
+	margin: 0;
+	padding: 0;
+}
+body {
+	height: 100vh;
+}
+
+.container {
+	padding: 50px;
+	padding-top: 10px;
+}
+
+.heading {
+	color: rgb(20, 20, 20);
+	font-family: "RocknRoll One", sans-serif;
+	font-weight: 900;
+	font-size: 2.5em;
+	text-align: center;
+	margin-bottom: 60px;
+	letter-spacing: 4px;
+}
+
+.card {
+	position: relative;
+	margin-right: 40px;
+	margin-left: 0px;
+	margin-bottom: 20px;
+	display: inline-block;
+	border-radius: 20px;
+	border: 4px solid rgb(200, 200, 200);
+	background: whitesmoke;
+	padding: 20px;
+	padding-bottom: 30px;
+	width: 350px;
+	height: 220px;
+	color: black;
+	cursor: pointer;
+}
+.user-name,
+.email,
+.phno,
+.address,
+.dob,
+.other-details {
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 800;
+}
+
+.delete-btn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 15px;
+	font-family: "Poppins", sans-serif;
+	font-weight: 600;
+	background: red;
+	padding: 5px;
+	border: 3px solid rgba(255, 0, 0, 0.4);
+	border-radius: 50%;
+	font-size: 0.9em;
+	cursor: pointer;
+	color: white;
+}
+
+.user-name {
+	font-size: 1.4em;
+	font-family: "RocknRoll One", sans-serif;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	width: 90%;
+}
+
+.email {
+	font-size: 1.2em;
+	font-family: "Poppins", sans-serif;
+	font-weight: 100;
+}
+
+.other-details {
+	margin-top: 20px;
+}
+
+.dob {
+	font-size: 1.1em;
+	font-family: "Poppins", sans-serif;
+	margin-bottom: 5px;
+}
+
+.phno {
+	font-size: 1.05em;
+	font-family: "Poppins", sans-serif;
+	margin-bottom: 5px;
+}
+
+.address {
+	font-size: 0.9em;
+	font-family: "Poppins", sans-serif;
+}
+
+.create-customer-btn {
+	padding: 8px 12px;
+	border-radius: 4px;
+	border: 3px grey solid;
+	position: fixed;
+	z-index: 100;
+	right: 80px;
+	bottom: 40px;
+	background-color: rgb(21, 17, 84);
+	color: white;
+	font-size: large;
+}
+.create-customer-btn:hover {
+	cursor: pointer;
+	background-color: black;
+}
+.selector {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30px;
+}
+.store-name {
+	width: 30%;
+	display: block;
+	font-family: "Poppins", sans-serif;
+	font-size: 1.1em;
+	text-indent: 10px;
+}

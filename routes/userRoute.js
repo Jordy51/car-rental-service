@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Booking = require("../models/Booking");
 
 // /user Read All
 router.get("/", (req, res) => {
@@ -41,7 +42,7 @@ router.post("/", async (req, res) => {
 
 // /user Update
 router.put("/:id", (req, res) => {
-	User.findOneAndUpdate({ _id: req.params.id, ...req.body })
+	User.findOneAndUpdate({ _id: req.params.id }, { ...req.body })
 		.then((user) => res.json(user))
 		.catch((err) => console.log(err));
 });
@@ -51,6 +52,12 @@ router.delete("/:id", (req, res) => {
 	User.findByIdAndDelete({ _id: req.params.id })
 		.then((user) => res.json(user))
 		.catch((err) => console.log(err));
+});
+
+// /user/:id/bookings
+router.get("/:id/bookings", async (req, res) => {
+	const bookings = await Booking.find({ user: req.params.id });
+	res.json(bookings);
 });
 
 module.exports = router;
