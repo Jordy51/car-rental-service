@@ -1,11 +1,26 @@
 const mongoose = require("mongoose");
 
+const TripSchema = mongoose.Schema({
+	fromDateTime: {
+		type: Date,
+		required: true,
+	},
+	toDateTime: {
+		type: Date,
+		required: true,
+	},
+	user: {
+		type: mongoose.Types.ObjectId,
+		ref: "User",
+	},
+});
+
 const CarSchema = mongoose.Schema({
 	carLicenseNumber: {
 		type: String,
 		required: true,
 		validate: (n) => {
-			return /[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(v);
+			return /[A-Za-z]{2}[0-9]{2}[A-Za-z]{2}[0-9]{4}/.test(n);
 		},
 	},
 	manufacturer: {
@@ -31,9 +46,13 @@ const CarSchema = mongoose.Schema({
 		required: true,
 		mix: 0,
 	},
+	trips: [TripSchema],
 });
 
-module.exports = mongoose.model("Car", CarSchema);
+const Car = mongoose.model("Car", CarSchema);
+const Trip = mongoose.model("Trip", TripSchema);
+
+module.exports = { Car, Trip };
 // carLicenseNumber(Unique true) = KA01EM7070,
 // Manufacturer - honda,
 // Model - city,

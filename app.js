@@ -1,28 +1,30 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+
+require("dotenv").config();
 
 const app = express();
 
-const PORT = process.env.MongoURI || 5000;
+const PORT = process.env.PORT || 5000;
 
 // DB Config
-const db = process.env.MongoURI + "RefyneCarRental";
+const db = process.env.MongoURI;
 
 // DB Connnection
 mongoose
-	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+	.connect(db + "RefyneCarRental", { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log("MongoDB Connected!"))
 	.catch((err) => console.log(err));
 
 // BodyParser
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // /car
 // /user
-
-app.use("/car", require("./routes/carRoute"));
+app.use("/", require("./routes/bookingRoute"));
+app.use("/cars", require("./routes/carRoute"));
 app.use("/user", require("./routes/userRoute"));
 
 // /search-car

@@ -1,33 +1,71 @@
 const router = require("express").Router();
-const Car = require("../models/Car")
+const { Car } = require("../models/Car");
 
 // /car/book
 
 // /car/bookings
 
+sanitizeCarLicenseNumber = (carLicenseNumber) => {
+	return String(carLicenseNumber).toUpperCase();
+};
 
-
-// /car  GET
-router.get("/", (req, res) => {
-	res.send("THis is GET page of Car");
+// /cars Read All
+router.get("/", async (req, res) => {
+	res.json(await Car.find({}));
 });
 
-// /car  POST
+// /cars Read
+router.get("/:id", async (req, res) => {
+	res.json(await Car.findOne({ _id: req.params.id }));
+});
+
+// /cars Create
 router.post("/", async (req, res) => {
-	const { carLicenseNumber } = req.body;
+	const { carLicenseNumber, manufacturer, model, price, pricePerHour, securityDeposit } = req.body;
 
-    if(await Car.findOne(carLicenseNumber)){
-        res.send(`Car with LicenseNumber ${carLicenseNumber} already exists.`)
-    }
-    else{
-        const newCar = new Car({
-            ...req.body
-        })
-        newCar
-            .save()
-            .then(() =>res.send(newCar))
-            .catch((err) => console.log(err))
-    }
+	const findCar = await Car.findOne({ carLicenseNumber: sanitizeCarLicenseNumber(carLicenseNumber) });
+
+	if (findCar) {
+		res.send(`Car with LicenseNumber ${carLicenseNumber} already exists.`);
+	} else {
+		const newCar = new Car({
+			carLicenseNumber: sanitizeCarLicenseNumber(carLicenseNumber),
+			manufacturer,
+			model,
+			price,
+			pricePerHour,
+			securityDeposit,
+		});
+		newCar
+			.save()
+			.then(() => res.json(newCar))
+			.catch((err) => console.log(err));
+	}
 });
 
-module.exports = router
+// /cars Update
+router.put("/:id", async (req, res) => {
+	const updatedCar = await Car.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
+	res.json(updatedCar);
+});
+
+// /cars Delete
+router.delete("/:id", async (req, res) => {
+	const deleteCar = await Car.findByIdAndDelete({ _id: req.params.id });
+	res.json(deleteCar);
+});
+
+// /cars/search-cars
+router.get("/search-cars/:fromDateTime/:toDateTime", async (req, res) => {
+	const searchedCars = await Car.find({});
+});
+
+// /cars/calculate-price
+router.get("/calculate-price/:id/:fromDateTime/:toDateTime", async (req, res) => {
+	const { price, pricePerHour, securityDeposit } = await Car.findOne({ _id: req.params.id });
+	const timeDifference = req.params.toDateTime - req.params.fromDateTime;
+	const hours = Math.ceil(timeDifference / 3600000);
+	res.json(price + pricePerHour * hours + securityDeposit);
+});
+
+module.exports = router;

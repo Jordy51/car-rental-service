@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema({
+	_Id: {
+		type: mongoose.Types.ObjectId,
+	},
 	userId: {
 		type: String,
 		required: true,
@@ -8,8 +11,11 @@ const UserSchema = mongoose.Schema({
 	mobileNumber: {
 		type: Number,
 		required: true,
-		min: 10,
-		max: 10,
+		min: 1000000000,
+		max: 9999999999,
+	},
+	name: {
+		type: String,
 	},
 });
 
