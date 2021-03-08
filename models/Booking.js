@@ -17,6 +17,10 @@ const BookingSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Car",
 	},
+	cost: {
+		type: Number,
+		required: true,
+	},
 });
 
 module.exports = mongoose.model("Booking", BookingSchema);

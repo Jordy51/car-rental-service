@@ -56,7 +56,7 @@ router.delete("/:id", (req, res) => {
 
 // /user/:id/bookings
 router.get("/:id/bookings", async (req, res) => {
-	const bookings = await Booking.find({ user: req.params.id });
+	const bookings = await Booking.find({ user: req.params.id }).populate("car");
 	res.json(bookings);
 });
 
