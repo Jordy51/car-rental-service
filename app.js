@@ -17,6 +17,7 @@ mongoose
 	.connect(db + "RefyneCarRental", { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log("MongoDB Connected!"))
 	.catch((err) => console.log(err));
+
 // BodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,8 +27,8 @@ app.use(express.static(__dirname + "/views"));
 app.set("view engine", "ejs");
 
 // Routes
-app.use("/", require("./routes/bookingRoute"));
-app.use("/cars", require("./routes/carRoute"));
-app.use("/user", require("./routes/userRoute"));
+app.use("/", require("./routes/booking"));
+app.use("/cars", require("./routes/cars"));
+app.use("/user", require("./routes/user"));
 
 app.listen(PORT, () => console.log(`Server is up and running on http://localhost:${PORT}`));

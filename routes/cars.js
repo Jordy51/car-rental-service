@@ -2,10 +2,6 @@ const router = require("express").Router();
 const Car = require("../models/Car");
 const Booking = require("../models/Booking");
 
-// /car/book
-
-// /car/bookings
-
 sanitizeCarLicenseNumber = (carLicenseNumber) => {
 	return String(carLicenseNumber).toUpperCase();
 };
@@ -62,7 +58,5 @@ router.get("/:id/bookings", async (req, res) => {
 	const bookings = await Booking.find({ car: req.params.id }).populate("user");
 	res.json(bookings);
 });
-
-
 
 module.exports = router;

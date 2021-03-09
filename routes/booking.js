@@ -20,14 +20,14 @@ validateDateTime = (fromDateTime, toDateTime) => {
 };
 
 // /:id/book/:user
-router.post("/:id/book/:user", async (req, res) => {
+router.post("/:id/book/:userId", async (req, res) => {
 	const { fromDateTime, toDateTime } = req.body;
 	if (validateDateTime(fromDateTime, toDateTime)) {
 		const totalCost = await calculateTotalCost(req.params.id, fromDateTime, toDateTime);
 		const newBooking = new Booking({
 			fromDateTime,
 			toDateTime,
-			user: mongoose.Types.ObjectId(req.params.user),
+			user: mongoose.Types.ObjectId(req.params.userId),
 			car: mongoose.Types.ObjectId(req.params.id),
 			cost: totalCost,
 		});

@@ -34,9 +34,3 @@ const CarSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("Car", CarSchema);
-// carLicenseNumber(Unique true) = KA01EM7070,
-// Manufacturer - honda,
-// Model - city,
-// base-price (Base price for any KM) - Rs500,
-// PPH (Price per hour) - Rs150,
-// security deposit - Rs1000
