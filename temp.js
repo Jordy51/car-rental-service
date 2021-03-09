@@ -1,5 +1,5 @@
-const dateFirst = new Date("11/25/2017");
-const dateSecond = new Date("11/28/2017");
+const dateFirst = new Date("12/14/2017");
+const dateSecond = new Date("12/18/2017");
 
 console.log(dateFirst.getTime());
 console.log(dateSecond.getTime());
