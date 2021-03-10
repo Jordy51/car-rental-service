@@ -17,30 +17,6 @@ router.get("/:id", (req, res) => {
 		.catch((err) => console.log(err));
 });
 
-// // /user Create
-// router.post("/", async (req, res) => {
-// 	const { userId, mobileNumber, name } = req.body;
-
-// 	const findUser = await User.findOne({ userId: userId });
-
-// 	if (mobileNumber.length != 10) {
-// 		res.send(`Invalid mobileNumber`);
-// 	} else if (findUser) {
-// 		res.send(`User with UserId ${findUser.userId} already exist.`);
-// 	} else {
-// 		const newUser = new User({
-// 			userId,
-// 			mobileNumber,
-// 			name,
-// 		});
-
-// 		newUser
-// 			.save()
-// 			.then((newUser) => res.json(newUser))
-// 			.catch((err) => console.log(err));
-// 	}
-// });
-
 // /user create
 router.post("/", (req, res) => {
 	const { userId, email, password, mobileNumber } = req.body;

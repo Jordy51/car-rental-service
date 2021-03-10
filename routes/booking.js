@@ -36,7 +36,7 @@ router.post("/:id/book/:userId", async (req, res) => {
 			.then(() => res.json(newBooking))
 			.catch((err) => console.log(err));
 	} else {
-		res.send("Invalid dateTime");
+		res.json("Invalid dateTime");
 	}
 });
 
@@ -67,7 +67,7 @@ router.get("/calculate-price/:id/:fromDateTime/:toDateTime", async (req, res) =>
 		const totalCost = await calculateTotalCost(req.params.id, req.params.fromDateTime, req.params.toDateTime);
 		res.json(totalCost);
 	} else {
-		res.send("Invalid dateTime");
+		res.json("Invalid dateTime");
 	}
 });
 
