@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const Booking = require("../models/Booking");
+const bcrypt = require("bcryptjs");
 
 // /user Read All
 router.get("/", (req, res) => {
@@ -16,34 +17,79 @@ router.get("/:id", (req, res) => {
 		.catch((err) => console.log(err));
 });
 
-// /user Create
-router.post("/", async (req, res) => {
-	const { userId, mobileNumber, name } = req.body;
+// // /user Create
+// router.post("/", async (req, res) => {
+// 	const { userId, mobileNumber, name } = req.body;
 
-	const findUser = await User.findOne({ userId: userId });
+// 	const findUser = await User.findOne({ userId: userId });
 
-	if (mobileNumber.length != 10) {
-		res.send(`Invalid mobileNumber`);
-	} else if (findUser) {
-		res.send(`User with UserId ${findUser.userId} already exist.`);
+// 	if (mobileNumber.length != 10) {
+// 		res.send(`Invalid mobileNumber`);
+// 	} else if (findUser) {
+// 		res.send(`User with UserId ${findUser.userId} already exist.`);
+// 	} else {
+// 		const newUser = new User({
+// 			userId,
+// 			mobileNumber,
+// 			name,
+// 		});
+
+// 		newUser
+// 			.save()
+// 			.then((newUser) => res.json(newUser))
+// 			.catch((err) => console.log(err));
+// 	}
+// });
+
+// /user create
+router.post("/", (req, res) => {
+	const { userId, email, password, mobileNumber } = req.body;
+	let errors = [];
+
+	if (!userId || !email || !password || !mobileNumber) {
+		errors.push({ msg: "Please enter all fields" });
+	}
+
+	if (password.length < 6) {
+		errors.push({ msg: "Password must be at least 6 characters" });
+	}
+
+	if (errors.length > 0) {
+		res.json(errors);
 	} else {
-		const newUser = new User({
-			userId,
-			mobileNumber,
-			name,
-		});
+		User.findOne({ email: email }).then((user) => {
+			if (user) {
+				errors.push({ msg: "Email already exists" });
+				res.json(errors);
+			} else {
+				const newUser = new User({
+					userId,
+					email,
+					password,
+					mobileNumber,
+				});
 
-		newUser
-			.save()
-			.then((newUser) => res.json(newUser))
-			.catch((err) => console.log(err));
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(newUser.password, salt, (err, hash) => {
+						if (err) throw err;
+						newUser.password = hash;
+						newUser
+							.save()
+							.then((user) => {
+								res.json(user);
+							})
+							.catch((err) => console.log(err));
+					});
+				});
+			}
+		});
 	}
 });
 
 // /user Update
 router.put("/:id", (req, res) => {
 	User.findOneAndUpdate({ _id: req.params.id }, { ...req.body })
-		.then((user) => res.json(user))
+		.then((user) => res.json({ msg: "User updated!", userId: user.userId }))
 		.catch((err) => console.log(err));
 });
 

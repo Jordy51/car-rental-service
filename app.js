@@ -14,7 +14,7 @@ const db = process.env.MongoURI;
 
 // DB Connnection
 mongoose
-	.connect(db + "RefyneCarRental", { useNewUrlParser: true, useUnifiedTopology: true })
+	.connect(db + "RefyneCarRental", { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 	.then(() => console.log("MongoDB Connected!"))
 	.catch((err) => console.log(err));
 
